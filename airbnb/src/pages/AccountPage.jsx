@@ -3,6 +3,7 @@ import { UserContext } from "../context/UserContext";
 import { Navigate, Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { baseURL } from "../api/config";
+import PlacesPage from "./PlacesPage";
 
 export default function AccountPage() {
 
@@ -54,10 +55,14 @@ export default function AccountPage() {
             </nav>
             {
                 subpage === 'profile' && (
-                    <div className="text-center max-w-lg mx-auto">
+                    <div className="text-center max-w-lg mx-auto mt-10">
                         Logged in as {user.name} ({user.email})<br />
                         <button onClick={Logout} className="primary max-w-sm mt-2">Logout</button>
                     </div>
+                )}
+            {
+                subpage === 'places' && (
+                    <PlacesPage />
                 )
             }
         </div>
