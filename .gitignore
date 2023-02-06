@@ -1,0 +1,4 @@
+air_backend/node_modules
+air_backend/.env
+air_backend/uploads/*
+
