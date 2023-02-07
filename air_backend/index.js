@@ -17,7 +17,7 @@ app.use(express.json())
 app.use(CookieParser());
 app.use(cors({
     credentials: true,
-    origin: 'http://192.168.0.108:5173'
+    origin: 'http://192.168.0.100:5173'
 }))
 
 // console.log(process.env.MONGO_URL)
