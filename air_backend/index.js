@@ -7,6 +7,10 @@ const User = require("./models/User")
 const bcrypt = require("bcryptjs")
 const jwt = require('jsonwebtoken')
 const CookieParser = require('cookie-parser');
+const multer = require('multer');
+
+const imageDownloader = require('image-downloader');
+
 const port = 4000
 
 const bcryptSalt = bcrypt.genSaltSync(10);
@@ -15,9 +19,10 @@ const jwtSecret = "sfsdfdsfsdfsdfds";
 
 app.use(express.json())
 app.use(CookieParser());
+app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(cors({
     credentials: true,
-    origin: 'http://192.168.0.100:5173'
+    origin: 'http://localhost:5173'
 }))
 
 // console.log(process.env.MONGO_URL)
@@ -84,7 +89,47 @@ app.post('/logout', (req, res) => {
     res.clearCookie('token').json({ message: "Logged Out" });
 });
 
+
+app.post('/upload-by-link', async(req, res) => {
+    const { link } = req.body;
+
+
+    const newName = "Photo" + Date.now() + '.jpg';
+
+    await imageDownloader.image({
+        url: link,
+        dest: __dirname + '/uploads/' +newName
+    });
+
+    res.json(newName);
+
+})
+
+
+app.post('upload', (req, res) => {
+    // const storage = multer.diskStorage({
+    //     destination: (req, file, cb) => {
+    //         cb(null, 'uploads');
+    //     },
+    //     filename: (req, file, cb) => {
+    //         cb(null, file.originalname);
+    //     }
+    // });
+
+    // const upload = multer({ storage: storage }).single('file');
+
+    // upload(req, res, (err) => {
+    //     if (err) {
+    //         console.log(err);
+    //         return res.status(500).json(err);
+    //     }
+    //     res.json(req.file);
+    // })
+})
+
+
 app.listen(port, () => {
     console.log(`App listening on Port ${port}`)
     console.log(`MongoDB Started...🤩`)
 })
+
